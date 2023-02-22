@@ -54,6 +54,6 @@ public class Simulation : MonoBehaviour
                     newValue += input[i, j]*(r/calculation_radius);//razy jakas funkcja(r/calculation_radius)
             }
         }
-        map[x, y] = newValue;
+        map[x, y] = Mathf.Clamp(newValue,0,1);
     }
 }
