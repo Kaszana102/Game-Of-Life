@@ -4,30 +4,31 @@ using UnityEngine;
 using UnityEditor;
 
 
-public class EditorGUICurveField : EditorWindow
+public class Krzywa : EditorWindow
 {
-    string myString = "Hello World";
-    bool groupEnabled;
-    bool myBool = true;
-    float myFloat = 1.23f;
+    AnimationCurve curveX = AnimationCurve.Linear(0, 0, 1, 0);
+    AnimationCurve curveY = AnimationCurve.Linear(0, 0, 1, 1);
+    AnimationCurve curveZ = AnimationCurve.Linear(0, 0, 1, 0);
 
-    // Add menu named "My Window" to the Window menu
-    [MenuItem("Window/My Window")]
+    [MenuItem("Examples/Curve Field demo")]
     static void Init()
     {
-        // Get existing open window or if none, make a new one:
-        MyWindow window = (MyWindow)EditorWindow.GetWindow(typeof(MyWindow));
+        EditorWindow window = GetWindow(typeof(Editor));
+        window.position = new Rect(0, 0, 400, 199);
         window.Show();
     }
 
     void OnGUI()
     {
-        GUILayout.Label("Base Settings", EditorStyles.boldLabel);
-        myString = EditorGUILayout.TextField("Text Field", myString);
-
-        groupEnabled = EditorGUILayout.BeginToggleGroup("Optional Settings", groupEnabled);
-        myBool = EditorGUILayout.Toggle("Toggle", myBool);
-        myFloat = EditorGUILayout.Slider("Slider", myFloat, -3, 3);
-        EditorGUILayout.EndToggleGroup();
+        curveX = EditorGUI.CurveField(
+            new Rect(3, 3, position.width - 6, 50),
+            "Animation on X", curveX);
+        curveY = EditorGUI.CurveField(
+            new Rect(3, 56, position.width - 6, 50),
+            "Animation on Y", curveY);
+        curveZ = EditorGUI.CurveField(
+            new Rect(3, 109, position.width - 6, 50),
+            "Animation on Z", curveZ);
     }
+
 }
