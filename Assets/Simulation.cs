@@ -6,11 +6,12 @@ public class Simulation : MonoBehaviour
 {
     
 
-    public float[,] map;
+    public float[,] map; //w sumie, czy nie powinno byæ prywatno/chronione? Nie chcemy by coœ z zewn¹rz to modyfikowa³o.
     private int sizeX;
     private int sizeY; 
     private bool simulate = true;
 
+    public RenderScript renderScript; // odwo³anie do skryptu zwi¹zanego z renderem
 
     [SerializeField] private int calculation_radius = 16;
     [SerializeField] private int resolution = 2;
@@ -55,5 +56,24 @@ public class Simulation : MonoBehaviour
             }
         }
         map[x, y] = Mathf.Clamp(newValue,0,1);
+    }
+
+
+    /// <summary>
+    /// zwraca nie przetworzon¹ macierz punktów
+    /// </summary>
+    /// <returns></returns>
+    void ActualizeRender()
+    {
+        renderScript.ConvertArrayToTexture(map);// refresh render
+    }
+
+    /// <summary>
+    /// return the size of simulation
+    /// </summary>
+    /// <returns></returns>
+    public (int,int) GetSimulationSize()
+    {
+        return (sizeY,sizeX);   
     }
 }
