@@ -27,7 +27,7 @@ public class Simulation : MonoBehaviour
     private int sizeX;
     private int sizeY;
     private bool mapChoice = true; //which map to use to avoid cloning the map
-    private bool simulate = true;
+    private bool simulate = false;
 
 
     [SerializeField] private int calculation_radius = 16;
@@ -37,7 +37,7 @@ public class Simulation : MonoBehaviour
         sizeX = Screen.width * resolution;
         sizeY = Screen.height * resolution;
         map = new float[sizeX,sizeY];
-        map = new float[sizeX, sizeY]; // 2*map[x,y]
+        map2 = new float[sizeX, sizeY]; // 2*map[x,y]
         pointsInCircle = new List<Point>[sizeX, sizeY]; //points that are included for the calculations(in the calc radius) for a specific point
         for (int x = 0; x < sizeX; x++)
         {
@@ -46,8 +46,9 @@ public class Simulation : MonoBehaviour
                 findPointsInTheCircle(x,y);
             }
         }
+        simulate = true;
     }
-    private void FixedUpdate()
+    private void Update()
     {
         if (simulate)
         {
@@ -80,8 +81,9 @@ public class Simulation : MonoBehaviour
             map[x, y] = Mathf.Clamp(newValue, 0, 1);
         }
     }
-    void findPointsInTheCircle(int x,int y)
+    void findPointsInTheCircle(int x, int y)
     {
+        pointsInCircle[x, y] = new List<Point>();
         int topRestriction = Mathf.Max(0, y - calculation_radius);
         int bottomRestriction = Mathf.Min(sizeY, y + calculation_radius);
         int leftRestriction = Mathf.Max(0, x - calculation_radius);
@@ -92,8 +94,8 @@ public class Simulation : MonoBehaviour
             for (int j = topRestriction; j < bottomRestriction; j++)
             {
                 float r = Mathf.Sqrt(Mathf.Pow(x - i, 2) + Mathf.Pow(y - j, 2)); //distance between 2 points
-                if (r <= calculation_radius)
-                    pointsInCircle[x, y].Add(new Point(i, j,r/calculation_radius)); //adding points that are in the calculation circle to the list
+                if (r <= calculation_radius && (i != x) && (j != y))
+                    pointsInCircle[x, y].Add(new Point(i, j, r / calculation_radius)); //adding points that are in the calculation circle to the list
             }
         }
     }
