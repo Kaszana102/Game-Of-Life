@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class RenderScript : MonoBehaviour
 {
-        
-    public Simulation simulation;
+            
     [SerializeField] Texture2D text;
-    public Material material;
+    [SerializeField] Material material;
 
 
     private (int x, int y) size=(Screen.width, Screen.height);
@@ -34,20 +33,12 @@ public class RenderScript : MonoBehaviour
 
         //Time.timeScale = (1 / 50f) * ( 4f );
 
-    }
-
-    // Update is called once per frame
-
-    private void Update()
-    {
-        UpdateText();
-    }
+    }    
     
 
 
     void UpdateText()
-    {
-        //float[,] array = simulation.GetRawMap();
+    {        
         ConvertArrayToTexture(array);
     }
 

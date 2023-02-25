@@ -29,6 +29,7 @@ public class Simulation : MonoBehaviour
     private bool mapChoice = true; //which map to use to avoid cloning the map
     private bool simulate = false;
 
+    public RenderScript renderScript;
 
     [SerializeField] private int calculation_radius = 16;
     [SerializeField] private int resolution = 2;
@@ -109,5 +110,23 @@ public class Simulation : MonoBehaviour
             return map2;
         }
           
+    }
+
+
+    /// <summary>
+    /// updates render
+    /// Send actual map (I guess? XD) to render script
+    /// </summary>
+    protected void RefreshRender()
+    {
+        
+        if (mapChoice)
+        {
+            renderScript.ConvertArrayToTexture(map);
+        }
+        else
+        {
+            renderScript.ConvertArrayToTexture(map2);
+        }
     }
 }
