@@ -32,11 +32,13 @@ public class Simulation : MonoBehaviour
     public RenderScript renderScript;
 
     [SerializeField] private int calculation_radius = 16;
-    [SerializeField] private int resolution = 2;
+    [SerializeField] private float resolution = 2; //zamieni³em na float, by dodaæ skalê mniejsz¹ ni¿ 1, skoro komputery wywala XD
+
+
     void Start()
     {
-        sizeX = Screen.width * resolution;
-        sizeY = Screen.height * resolution;
+        sizeX = (int)(Screen.width * resolution);
+        sizeY = (int)(Screen.height * resolution);
         map = new float[sizeX,sizeY];
         map2 = new float[sizeX, sizeY]; // 2*map[x,y]
         pointsInCircle = new List<Point>[sizeX, sizeY]; //points that are included for the calculations(in the calc radius) for a specific point
@@ -48,9 +50,26 @@ public class Simulation : MonoBehaviour
             }
         }
         simulate = true;
+
+
+        SetInitialState();
+
     }
-    private void Update()
+
+    /// <summary>
+    /// initial state of the map
+    /// </summary>
+    private void SetInitialState()
     {
+        map[100, 100] = 1f;        
+        map[101, 100] = 1f;        
+        map[100, 101] = 1f;        
+        map[101, 101] = 1f;        
+    }
+
+
+    private void Update()
+    {        
         if (simulate)
         {
             for (int x = 0; x < sizeX; x++)
@@ -61,6 +80,7 @@ public class Simulation : MonoBehaviour
                 }
             }
             mapChoice = !mapChoice; //switch which map is used as an input and which as output
+            RefreshRender();
         }
     }
     void calculateFieldValue(int x,int y)
@@ -128,5 +148,13 @@ public class Simulation : MonoBehaviour
         {
             renderScript.ConvertArrayToTexture(map2);
         }
+    }
+
+    public (int, int) GetSimulationSize()
+    {
+        return (
+            (int)(Screen.width * resolution),
+            (int)(Screen.height * resolution)
+        );
     }
 }

@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 113716668}
   - component: {fileID: 113716667}
   - component: {fileID: 113716666}
+  - component: {fileID: 113716671}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -232,9 +233,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8842daafe732ffe4faa7d164eeb88cc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  simulation: {fileID: 0}
   text: {fileID: 0}
   material: {fileID: 2100000, guid: a9e0274962052c1478617b5da7ce90c4, type: 2}
+  simulation: {fileID: 113716671}
 --- !u!64 &113716667
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -314,6 +315,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &113716671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113716665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52e4925cb53ed72468ec3aba3056d586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderScript: {fileID: 113716666}
+  calculation_radius: 2
+  resolution: 0.25
 --- !u!1 &253667578
 GameObject:
   m_ObjectHideFlags: 0

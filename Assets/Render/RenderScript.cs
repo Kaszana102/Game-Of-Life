@@ -9,15 +9,15 @@ public class RenderScript : MonoBehaviour
     [SerializeField] Material material;
 
 
-    private (int x, int y) size=(Screen.width, Screen.height);
+    private (int x, int y) size;
 
 
     float[,] array;//while not working simulation
-
+    public Simulation simulation;
     // Start is called before the first frame update
     void Start()
     {
-        //size = simulation.GetSimulationSize();//while not working simulation
+        size = simulation.GetSimulationSize();//while not working simulation
 
         array = new float[size.x, size.y]; //while not working simulation
 
@@ -37,15 +37,6 @@ public class RenderScript : MonoBehaviour
     
 
 
-    void UpdateText()
-    {        
-        ConvertArrayToTexture(array);
-    }
-
-
-    float offset = 0f; //dla testów do animacji
-
-
     /// <summary>
     /// converts array of valus to texture to render.
     /// It applies all changes so the render will change!
@@ -58,16 +49,10 @@ public class RenderScript : MonoBehaviour
         {
             for (int j = 0; j < size.y; j++)
             {
-                text.SetPixel(i, j, new Color(array[i, j] + offset, array[i, j] + offset, array[i, j] + offset)); //najbardziej problematyczna linijka
+                text.SetPixel(i, j, new Color(array[i, j], array[i, j], array[i, j])); //najbardziej problematyczna linijka
             }
         }
-        
-
-        offset += 0.1f;
-        if (offset > 1f)
-        {
-            offset = 0f;
-        }
+       
         text.Apply();
     }
 }

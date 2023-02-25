@@ -10,6 +10,14 @@ public class Krzywa : EditorWindow
     AnimationCurve curveY = AnimationCurve.Linear(0, 0, 1, 1);
     AnimationCurve curveZ = AnimationCurve.Linear(0, 0, 1, 0);
 
+
+    [MenuItem("Custom/Generate City %g")]
+    public static void OpenWindow()
+    {
+        GetWindow<Krzywa>();
+    }
+
+
     [MenuItem("Examples/Curve Field demo")]
     static void Init()
     {
