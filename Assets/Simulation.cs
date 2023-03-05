@@ -140,14 +140,7 @@ public class Simulation : MonoBehaviour
     protected void RefreshRender()
     {
         
-        if (mapChoice)
-        {
-            renderScript.ConvertArrayToTexture(map);
-        }
-        else
-        {
-            renderScript.ConvertArrayToTexture(map2);
-        }
+        
     }
 
     public (int, int) GetSimulationSize()
