@@ -46,13 +46,26 @@ public class RenderScript : MonoBehaviour
     BrushData[] brushData = new BrushData[1];
     ComputeBuffer brushBuffer;
 
+
+    struct Coefficients
+    {
+        public float[,] coefs;            
+    };
+
+    Coefficients[] coefficients = new Coefficients[1];
+    ComputeBuffer coefficientsBuffer;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        //creating buffers
         simBuffer = new ComputeBuffer(1, 4+4);
         brushBuffer = new ComputeBuffer(1, 16);
-        
+        coefficientsBuffer = new ComputeBuffer(1,20*20*4);
+
+
+        //creatung textures
         TextResult = new RenderTexture(width, height, 24);
         TextResult.enableRandomWrite = true;
         TextResult.Create();
@@ -63,13 +76,19 @@ public class RenderScript : MonoBehaviour
         TextSource.Create();
 
 
+
+        //initializing start values
+        //sim
         simData[0].simRange = 1;
         simData[0].simulating = 1;
 
-
+        //brush
         brushData[0].strength = 0f;
         brushData[0].brushRange = 2;
         brushData[0].brushCenter = uint2.zero;
+
+        //coeef
+        coefficients[0].coefs = new float[20,20];
     }
 
     // Update is called once per frame
@@ -93,9 +112,11 @@ public class RenderScript : MonoBehaviour
 
         brushBuffer.SetData(brushData);
         simBuffer.SetData(simData);
-        shader.SetBuffer(0, "simBuffer", simBuffer);        
-        shader.SetBuffer(0, "brush", brushBuffer);        
+        coefficientsBuffer.SetData(coefficients);
 
+        shader.SetBuffer(0, "simBuffer", simBuffer);        
+        shader.SetBuffer(0, "brush", brushBuffer);
+        shader.SetBuffer(0, "coeff", coefficientsBuffer);
 
         if (srcToRes) //swap textures for simulation
         {
@@ -151,5 +172,11 @@ public class RenderScript : MonoBehaviour
     {
         brushData[0].brushCenter=center;
     }
+
+    public void SetCoefficients(float[,] coefs)
+    {
+        coefficients[0].coefs = coefs;
+    }
+
 
 }

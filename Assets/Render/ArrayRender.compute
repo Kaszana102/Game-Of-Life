@@ -18,6 +18,10 @@ struct BrushType
     uint2 brushCenter;    
 };
 
+struct Coefficients {
+    float coef[20][20];
+};
+
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
 RWTexture2D<float> Result; //black white
@@ -26,6 +30,7 @@ RWTexture2D<float> Source;//black white
 
 StructuredBuffer<data> simBuffer;
 StructuredBuffer<BrushType> brush;
+StructuredBuffer<Coefficients> coeff;
 
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
