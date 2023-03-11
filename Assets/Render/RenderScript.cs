@@ -152,9 +152,9 @@ public class RenderScript : MonoBehaviour
         simData[0].simulating=val;
     }
 
-    public void SimRange(int range)
+    public void SimRange(float range)
     {
-        simData[0].simRange=range;
+        simData[0].simRange=(int)range;
     }
 
 
@@ -163,9 +163,9 @@ public class RenderScript : MonoBehaviour
         brushData[0].strength=strength;
     }
 
-    public void SetBrushRange(int range)
+    public void SetBrushRange(float range)
     {
-        brushData[0].brushRange=range;
+        brushData[0].brushRange= (int)range;
     }    
 
     public void SetBrushCenter(uint2 center)
