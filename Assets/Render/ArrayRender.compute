@@ -18,9 +18,6 @@ struct BrushType
     uint2 brushCenter;    
 };
 
-struct Coefficients {
-    float coef[20][20];
-};
 
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
@@ -30,7 +27,11 @@ RWTexture2D<float> Source;//black white
 
 StructuredBuffer<data> simBuffer;
 StructuredBuffer<BrushType> brush;
-StructuredBuffer<Coefficients> coeff;
+StructuredBuffer<float> coeff;
+
+#define COEFFMAXRANGE  10
+#define COEEFWIDTH COEFFMAXRANGE*2 + 1
+
 
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
@@ -49,7 +50,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
                 pos.y = id.y + j;
 
                 if ((float)distance(pos, id) <= simBuffer[0].simRange) { //if in range
-                    sum += Source[pos.xy]; //here should be modification to the curve input :/
+                    sum += Source[pos.xy] * coeff[COEEFWIDTH *(i+ COEFFMAXRANGE)+j+ COEFFMAXRANGE];
                 }
             }
         }
@@ -65,3 +66,4 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         Result[id.xy] += brush[0].strength;
     }
 }
+
