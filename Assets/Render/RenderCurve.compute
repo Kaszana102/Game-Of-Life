@@ -1,0 +1,167 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Result;
+
+StructuredBuffer<int> pointsNumber;
+StructuredBuffer<int2> points;//array of max 13 points
+
+
+#define red  float4(1, 0, 0, 1)
+#define green  float4(0, 1, 0, 1)
+#define blue  float4(0, 0, 1, 1)
+
+
+
+
+//return 3 po b
+int Binomial(int k) {
+	if (3 >= k) {
+		switch (k) {
+		case 0: return 1;
+		case 1: return 3;
+		case 2: return 3;
+		case 3: return 1;
+		default: return 0;
+		}		
+		
+	}
+	else {
+		return 1;
+	}
+}
+
+
+uint2 CalcPoint(uint startPointIndex, float t)
+{
+	uint2 otp = 0;
+	float sum;
+
+	int DEGREE = 3;
+
+	//x
+	sum = 0;
+	for (int i = 0; i < DEGREE+1; i++) {
+		sum += Binomial(i) * pow(t, i) * pow(1.0 - t, DEGREE  - i) * points[startPointIndex+i].x;		
+	}
+	otp.x = sum;		
+
+	//y
+	sum = 0;
+	for (i = 0; i < DEGREE+1; i++)
+	{
+		sum += Binomial(i) * pow(t, i) * pow(1.0 - t, DEGREE - i) * points[startPointIndex + i].y;
+	}
+	otp.y = sum;	
+
+
+	return otp;
+}
+
+//draws circle of radius 5;
+//and width of 5
+void DrawCircle(int2 circleCenter, float4 color) {
+	int outerR = 20;
+	int innerR = 15;
+	uint2 pointPos;
+	for (int i = -outerR; i <= outerR; i++) {
+		for (int j = -outerR; j <= outerR; j++) {
+			pointPos.x = circleCenter.x + i;
+			pointPos.y = circleCenter.y + j;
+			if ((float)distance(circleCenter, pointPos) <= outerR
+				&&
+				(float)distance(circleCenter, pointPos) >= innerR) {
+				Result[pointPos] = color;
+			}
+		}
+	}
+}
+
+void DrawLine(int2 p, int2 a, int2 b) {
+
+	float2 pa = p - a, ba = b - a;
+	float h = saturate(dot(pa, ba) / dot(ba, ba));
+	float2 d = pa - ba * h;
+	float dist = dot(d, d);
+	if (dist <= 3) {
+		Result[p]= float4(1,0, 0, 1);
+	}
+
+}
+
+void CheckLines(int2 pointToCheck) {
+	for (int i = 0; i < pointsNumber[0]; i += 3) {
+		//if first point
+		if (i == 0) {
+			DrawLine(pointToCheck,points[i + 1], points[i]);
+
+		}
+		//if last point
+		else if (i == pointsNumber[0] - 1) {
+			DrawLine(pointToCheck, points[i -1], points[i]);
+		}
+		//if middle
+		else {
+			DrawLine(pointToCheck, points[i - 1], points[i]);
+			DrawLine(pointToCheck, points[i + 1], points[i]);
+		}
+	}
+}
+
+
+void DrawBezierCircle(int index) {
+
+	//prev 
+	if (index != 0) {
+		DrawCircle(points[index-1], blue);
+	}
+
+	//center
+	DrawCircle(points[index], green);
+
+	//next
+	if (index != pointsNumber[0] - 1) {
+		DrawCircle(points[index + 1], blue);
+	}
+}
+
+void DrawBezier(int2 pos) {
+	for (int offset = 0; offset < 5; offset++) {
+		Result[pos] = green;
+		pos.y++;
+	}
+}
+
+void InterpolateEdgeCases(int2 id) {
+	if (id.x < points[0].x && id.y == points[0].y) {
+		DrawBezier(id);
+	}
+	if (id.x > points[pointsNumber[0]-1].x && id.y == points[pointsNumber[0]-1].y) {
+		DrawBezier(id);
+	}
+}
+
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+	
+	if (id.y==0) {
+		uint width, height;
+		Result.GetDimensions(width, height);
+		for (int i = 0; i < pointsNumber[0]-1; i += 3) {
+			float t = ((float)id.x) / width;
+			uint2 pos = CalcPoint(i, t);
+			DrawBezier(pos);
+		}
+	}
+
+	InterpolateEdgeCases(id.xy);
+
+	if (id.x == 0 && id.y < pointsNumber[0] && id.y%3 == 0) {
+		DrawBezierCircle(id.y);
+	}	
+	CheckLines(id.xy);
+		
+}

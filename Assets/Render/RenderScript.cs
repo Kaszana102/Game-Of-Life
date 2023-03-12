@@ -46,23 +46,21 @@ public class RenderScript : MonoBehaviour
     BrushData[] brushData = new BrushData[1];
     ComputeBuffer brushBuffer;
 
+    const int COEFFWIDTH = 21;
 
-    struct Coefficients
-    {
-        public float[,] coefs;            
-    };
-
-    Coefficients[] coefficients = new Coefficients[1];
+    float[] coefficients = new float[COEFFWIDTH * COEFFWIDTH];                   
     ComputeBuffer coefficientsBuffer;
 
+    bool circleToDraw = false;
 
+    public BezierCurve bezier;
     // Start is called before the first frame update
     void Start()
     {
         //creating buffers
         simBuffer = new ComputeBuffer(1, 4+4);
         brushBuffer = new ComputeBuffer(1, 16);
-        coefficientsBuffer = new ComputeBuffer(1,20*20*4);
+        coefficientsBuffer = new ComputeBuffer(COEFFWIDTH* COEFFWIDTH, 4);
 
 
         //creatung textures
@@ -87,8 +85,8 @@ public class RenderScript : MonoBehaviour
         brushData[0].brushRange = 2;
         brushData[0].brushCenter = uint2.zero;
 
-        //coeef
-        coefficients[0].coefs = new float[20,20];
+        
+        
     }
 
     // Update is called once per frame
@@ -98,16 +96,8 @@ public class RenderScript : MonoBehaviour
         if (Input.GetKeyDown("w"))
         {
 
-            brushData[0].brushCenter.x = (uint) width/2;
-            brushData[0].brushCenter.y = (uint) height / 2;
-            brushData[0].strength = 1f;            
+            DrawCircle(500, 500, 10, 1);           
             
-        }
-        else
-        {
-            brushData[0].brushCenter.x = 100;
-            brushData[0].brushCenter.y = 100;
-            brushData[0].strength = 0f;
         }
 
         brushBuffer.SetData(brushData);
@@ -145,6 +135,11 @@ public class RenderScript : MonoBehaviour
 
 
         srcToRes = !srcToRes;
+        if (circleToDraw)
+        {
+            circleToDraw = false;
+            brushData[0].strength = 0f;
+        }
     }
 
     public void SetiSimulating(int val)
@@ -173,9 +168,32 @@ public class RenderScript : MonoBehaviour
         brushData[0].brushCenter=center;
     }
 
-    public void SetCoefficients(float[,] coefs)
+    public void DrawCircle(uint x, uint y,int range, float strength)
     {
-        coefficients[0].coefs = coefs;
+        SetBrushCenter(new uint2(x, y));
+        SetBrushRange(range);
+        SetBrushStrength(strength);
+        circleToDraw = true;
+    }
+
+    public void SetCoefficients(float[] coefs)
+    {
+        coefficients = coefs;
+    }
+
+    public void RefreshCoefficients()
+    {
+        Debug.Log("TEST");
+        for (int i = 0; i < COEFFWIDTH; i++)
+        {
+            for (int j = 0; j < COEFFWIDTH; j++)
+            {
+                if (Vector2.Distance(new Vector2(i, j), new Vector2(COEFFWIDTH / 2, COEFFWIDTH / 2)) <= 5)
+                {
+                    coefficients[i * COEFFWIDTH + j] = bezier.Evaluate(Vector2.Distance(new Vector2(i, j), new Vector2(COEFFWIDTH / 2, COEFFWIDTH / 2)) / 5);
+                }
+            }
+        }
     }
 
 
