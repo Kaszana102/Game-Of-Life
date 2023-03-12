@@ -24,8 +24,8 @@ public class RenderScript : MonoBehaviour
     bool srcToRes = true;
 
 
-    int width = Screen.width;
-    int height = Screen.height;
+    public int width = Screen.width;
+    public int height = Screen.height;
 
     public struct SimData
     {
@@ -95,9 +95,7 @@ public class RenderScript : MonoBehaviour
         //input draw test
         if (Input.GetKeyDown("w"))
         {
-
-            DrawCircle(500, 500, 10, 1);           
-            
+            DrawCircle(500, 500, 10, 1);                       
         }
 
         brushBuffer.SetData(brushData);
@@ -142,9 +140,9 @@ public class RenderScript : MonoBehaviour
         }
     }
 
-    public void SetiSimulating(int val)
+    public void SetiSimulating(bool val)
     {
-        simData[0].simulating=val;
+        simData[0].simulating=val? 1:0;
     }
 
     public void SimRange(float range)
@@ -176,10 +174,6 @@ public class RenderScript : MonoBehaviour
         circleToDraw = true;
     }
 
-    public void SetCoefficients(float[] coefs)
-    {
-        coefficients = coefs;
-    }
 
     public void RefreshCoefficients()
     {
@@ -188,9 +182,14 @@ public class RenderScript : MonoBehaviour
         {
             for (int j = 0; j < COEFFWIDTH; j++)
             {
-                if (Vector2.Distance(new Vector2(i, j), new Vector2(COEFFWIDTH / 2, COEFFWIDTH / 2)) <= 5)
+                if (Vector2.Distance(new Vector2(i, j), new Vector2(COEFFWIDTH / 2, COEFFWIDTH / 2)) <= 10)
                 {
-                    coefficients[i * COEFFWIDTH + j] = bezier.Evaluate(Vector2.Distance(new Vector2(i, j), new Vector2(COEFFWIDTH / 2, COEFFWIDTH / 2)) / 5);
+                    float coef = bezier.Evaluate(Vector2.Distance(new Vector2(i, j), new Vector2(COEFFWIDTH / 2, COEFFWIDTH / 2)) / 5);
+                    coefficients[i * COEFFWIDTH + j] = coef;                    
+                }
+                else
+                {
+                    coefficients[i * COEFFWIDTH + j] = 0;                    
                 }
             }
         }

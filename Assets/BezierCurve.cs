@@ -194,13 +194,12 @@ public class BezierCurve : MonoBehaviour
             heldPoint.pos = ClampMousePos(posInt2);
 
             SortBezierPoints();
-
+            render.RefreshCoefficients();
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            holdingCircle = false;
-            render.RefreshCoefficients();
+            holdingCircle = false;            
         }
 
         if (Input.GetMouseButtonDown(1))

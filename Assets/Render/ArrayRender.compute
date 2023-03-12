@@ -30,7 +30,7 @@ StructuredBuffer<BrushType> brush;
 StructuredBuffer<float> coeff;
 
 #define COEFFMAXRANGE  10
-#define COEEFWIDTH COEFFMAXRANGE*2 + 1
+#define COEEFWIDTH (COEFFMAXRANGE*2 + 1)
 
 
 [numthreads(8,8,1)]
