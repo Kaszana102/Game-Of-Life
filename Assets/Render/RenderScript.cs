@@ -18,15 +18,15 @@ public class RenderScript : MonoBehaviour
     //Shader resources
     public ComputeShader shader;    
     [SerializeField] RenderTexture TextResult;
-    RenderTexture TextSource;
+    public RenderTexture TextSource;
     RawImage image;
           
 
     bool srcToRes = true;
 
 
-    int width = Screen.width;
-    int height = Screen.height;
+    int width = 1024;
+    int height = 1024;
 
     public struct SimData
     {
@@ -94,9 +94,9 @@ public class RenderScript : MonoBehaviour
     void Update()
     {                
         //input draw test
-        if (Input.GetKeyDown("w"))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            DrawCircle(500, 500, 1, 1);                       
+            SetiSimulating(!GetiSimulating());
         }
 
         brushBuffer.SetData(brushData);
@@ -145,6 +145,10 @@ public class RenderScript : MonoBehaviour
     {
         simData[0].simulating=val? 1:0;
     }
+    public bool GetiSimulating()
+    {
+        return simData[0].simulating == 1 ? true : false;
+    }
 
     public void SimRange(float range)
     {
@@ -161,11 +165,10 @@ public class RenderScript : MonoBehaviour
     {
         brushData[0].strength=strength;
     }
-
     public void SetBrushRange(float range)
     {
         brushData[0].brushRange= (int)range;
-    }    
+    }
 
     public void SetBrushCenter(uint2 center)
     {
