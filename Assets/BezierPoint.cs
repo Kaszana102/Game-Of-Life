@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Mathematics;
+using System;
 
-public class BezierPoint : MonoBehaviour
+public class BezierPoint : MonoBehaviour, ICloneable
 {
     public Point center;
     public Point prevControlPoint; //global pos
@@ -22,6 +23,18 @@ public class BezierPoint : MonoBehaviour
         this.center = new Point(pos);
         this.prevControlPoint = new Point(prevControlPoint + pos);
         this.nextControlPoint = new Point(nextControlPoint + pos);
+    }
+
+    public BezierPoint(int2 pos, int2 prevControlPoint, int2 nextControlPoint, bool notused)
+    {
+        this.center = new Point(pos);
+        this.prevControlPoint = new Point(prevControlPoint);
+        this.nextControlPoint = new Point(nextControlPoint);
+    }
+
+    public object Clone()
+    {
+        return new BezierPoint(center.pos,prevControlPoint.pos,nextControlPoint.pos,false);
     }
 
     public override string ToString()

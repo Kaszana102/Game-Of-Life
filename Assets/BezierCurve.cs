@@ -204,7 +204,22 @@ public class BezierCurve : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            CreateNewBezierPoint();
+            bool deleted = false;
+            for(int i=0;i<bezierPoints.Count;i++)
+            {                
+
+                if (ClickedPoint(bezierPoints[i].center))
+                {
+                    deleted = true;
+                    bezierPoints.RemoveAt(i);
+                    break;
+                }
+            }
+            if (!deleted)
+            {
+                CreateNewBezierPoint();
+            }
+            
         }
     }
 
@@ -261,6 +276,18 @@ public class BezierCurve : MonoBehaviour
     }
 
 
+    public List<BezierPoint> CopyBezierPoints()
+    {
+
+        return Extensions.Clone(bezierPoints);
+    }
+
+    public void SetBezierPoints(List<BezierPoint> newPoints)
+    {
+        bezierPoints = newPoints;
+    }
+
+
     /// <summary>
     /// return value of bezier curve.
     /// t € <0,1>
@@ -276,7 +303,7 @@ public class BezierCurve : MonoBehaviour
         int prevPointIndex = 0;
         for(int i =0; i<bezierPoints.Count; i++)
         {
-            if (x < bezierPoints[i].center.pos.x)
+            if (x <= bezierPoints[i].center.pos.x)
             {                
                 found = true;
                 if (i == 0)
@@ -295,13 +322,13 @@ public class BezierCurve : MonoBehaviour
         if (!found)
         {
             //interpolate from the end
-
-            result = bezierPoints[0].center.pos.y;
+            
+            result = bezierPoints[bezierPoints.Count - 1].center.pos.y;
         }
         else if (beforeFirst)
         {
             //interpolate from the beg
-            result = bezierPoints[bezierPoints.Count - 1].center.pos.y;
+            result = bezierPoints[0].center.pos.y;
         }
         else
         {
@@ -310,14 +337,15 @@ public class BezierCurve : MonoBehaviour
             //standard calc estimation
             for(float f = 0; f <= 1; f += 0.01f)
             {
+                sum = 0;
                 for (int i = 0; i < 4; i++)
                 {
-                    sum += ((i==2 || i == 1)? 3 : 1) * math.pow(t, i) * math.pow(1 - t, 3 - i) * pointsArray[prevPointIndex + i].x;
-                    if (sum >= t)
-                    {
-                        //found t (aproximately) xd
-                        targetT = f;
-                    }
+                    sum += ((i==2 || i == 1)? 3 : 1) * math.pow(t, i) * math.pow(1 - t, 3 - i) * pointsArray[prevPointIndex + i].x;                    
+                }
+                if (sum >= t)
+                {
+                    //found t (aproximately) xd
+                    targetT = f;
                 }
             }
 

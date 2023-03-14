@@ -95,7 +95,7 @@ public class RenderScript : MonoBehaviour
         //input draw test
         if (Input.GetKeyDown("w"))
         {
-            DrawCircle(500, 500, 10, 1);                       
+            DrawCircle(500, 500, 1, 1);                       
         }
 
         brushBuffer.SetData(brushData);
@@ -150,6 +150,11 @@ public class RenderScript : MonoBehaviour
         simData[0].simRange=(int)range;
     }
 
+    public int GetSimRange()
+    {
+        return simData[0].simRange;
+    }
+
 
     public void SetBrushStrength(float strength)
     {
@@ -176,16 +181,16 @@ public class RenderScript : MonoBehaviour
 
 
     public void RefreshCoefficients()
-    {
-        Debug.Log("TEST");
+    {        
         for (int i = 0; i < COEFFWIDTH; i++)
         {
             for (int j = 0; j < COEFFWIDTH; j++)
             {
-                if (Vector2.Distance(new Vector2(i, j), new Vector2(COEFFWIDTH / 2, COEFFWIDTH / 2)) <= 10)
+                if (Vector2.Distance(new Vector2(i, j), new Vector2(COEFFWIDTH / 2, COEFFWIDTH / 2)) <= simData[0].simRange)
                 {
-                    float coef = bezier.Evaluate(Vector2.Distance(new Vector2(i, j), new Vector2(COEFFWIDTH / 2, COEFFWIDTH / 2)) / 5);
-                    coefficients[i * COEFFWIDTH + j] = coef;                    
+                    float coef = bezier.Evaluate(Vector2.Distance(new Vector2(i, j), new Vector2(COEFFWIDTH / 2, COEFFWIDTH / 2)) / (simData[0].simRange));
+                    coefficients[i * COEFFWIDTH + j] = coef;  
+                    
                 }
                 else
                 {
@@ -195,5 +200,9 @@ public class RenderScript : MonoBehaviour
         }
     }
 
+    public float[] GetCoeffs()
+    {
+        return coefficients;
+    }
 
 }
