@@ -376,15 +376,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1adff93ecf842414e90774b4fe5bc696, type: 3}
+--- !u!1 &1489342605 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 337863574353625581, guid: 1adff93ecf842414e90774b4fe5bc696,
+    type: 3}
+  m_PrefabInstance: {fileID: 1489342604}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1489342606 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1489342606, guid: 1adff93ecf842414e90774b4fe5bc696,
     type: 3}
   m_PrefabInstance: {fileID: 1489342604}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1489342605}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a74b4f71999d82747a4d92b4c2015946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1489342607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489342605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b25742e4b70e8e747a90f7be7d7d6f71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mousePosistion: {x: 0, y: 0}

@@ -237,6 +237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shader: {fileID: 7200000, guid: c18914d72797e8a409d952dbb07b24ae, type: 3}
   TextResult: {fileID: 0}
+  TextSource: {fileID: 0}
   bezier: {fileID: 2523850461421987923}
 --- !u!1 &968357460943486341
 GameObject:
