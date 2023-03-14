@@ -59,11 +59,12 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         if (sum < 0.0)   sum = 0;        
 
         Result[id.xy] = sum;
+        
     }    
 
     //when brushing add val
     if ((float)distance(id, brush[0].brushCenter) < brush[0].brushRange) {
-        Result[id.xy] += brush[0].strength;
+        Result[id.xy] += brush[0].strength;        
     }
 }
 

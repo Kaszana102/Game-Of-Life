@@ -15,6 +15,10 @@ public class ShowSliderValue : MonoBehaviour
 
     public void SetVal(Slider slider)
     {
-        text.text = slider.value.ToString();
+        if (text != null)
+        {
+            text.text = slider.value.ToString();
+        }
+
     }
 }

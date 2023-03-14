@@ -18,14 +18,15 @@ public class RenderScript : MonoBehaviour
     //Shader resources
     public ComputeShader shader;    
     [SerializeField] RenderTexture TextResult;
-    RenderTexture TextSource;    
-    public Material mat;    
+    RenderTexture TextSource;
+    RawImage image;
+          
 
     bool srcToRes = true;
 
 
-    public int width = Screen.width;
-    public int height = Screen.height;
+    int width = Screen.width;
+    int height = Screen.height;
 
     public struct SimData
     {
@@ -85,7 +86,7 @@ public class RenderScript : MonoBehaviour
         brushData[0].brushRange = 2;
         brushData[0].brushCenter = uint2.zero;
 
-        
+        image = gameObject.GetComponent<RawImage>();
         
     }
 
@@ -124,11 +125,11 @@ public class RenderScript : MonoBehaviour
         //set texture
         if (srcToRes)
         {
-            mat.mainTexture = TextResult;
+            image.texture = TextResult;
         }
         else
         {
-            mat.mainTexture = TextSource;
+            image.texture = TextSource;
         }
 
 
