@@ -332,27 +332,37 @@ public class BezierCurve : MonoBehaviour
         }
         else
         {
+
+            if (0.25 < t && t <= 0.5f)
+            {
+                int a = 2;
+            }
+
+            prevPointIndex *= 3;//convert bezierpoint index do pointsarray index
+
             float sum = 0;
-            float targetT =0;
+            float targetF
+                =0;
             //standard calc estimation
             for(float f = 0; f <= 1; f += 0.01f)
             {
                 sum = 0;
                 for (int i = 0; i < 4; i++)
                 {
-                    sum += ((i==2 || i == 1)? 3 : 1) * math.pow(t, i) * math.pow(1 - t, 3 - i) * pointsArray[prevPointIndex + i].x;                    
+                    sum += ((i==2 || i == 1)? 3 : 1) * math.pow(f, i) * math.pow(1 - f, 3 - i) * pointsArray[prevPointIndex + i].x;                    
                 }
-                if (sum >= t)
+                if (sum >= x)
                 {
-                    //found t (aproximately) xd
-                    targetT = f;
+                    //found f (aproximately) xd
+                    targetF = f;
+                    break;
                 }
             }
 
             //caly y
             for (int i = 0; i < 4; i++)
             {
-                result += ((i == 2 || i == 1) ? 3 : 1) * math.pow(targetT, i) * math.pow(1 - targetT, 3 - i) * pointsArray[prevPointIndex + i].y;                
+                result += ((i == 2 || i == 1) ? 3 : 1) * math.pow(targetF, i) * math.pow(1 - targetF, 3 - i) * pointsArray[prevPointIndex + i].y;                
             }
         }
 
