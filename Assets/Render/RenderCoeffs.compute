@@ -7,10 +7,9 @@ RWTexture2D<float4> Result;
 
 StructuredBuffer<int>simRange;
 StructuredBuffer<float> coeffs;
+StructuredBuffer<int> COEFFMAXRANGE;
+StructuredBuffer<int> COEEFWIDTH;
 
-
-#define COEFFMAXRANGE  10
-#define COEEFWIDTH (COEFFMAXRANGE*2 + 1)
 
 
 [numthreads(8,8,1)]
@@ -24,7 +23,8 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     int posX = id.x * resolution / width;
     int posY = id.y * resolution / height;
 
-    float val = coeffs[COEEFWIDTH * (posX + COEFFMAXRANGE - simRange[0]) + posY + COEFFMAXRANGE - simRange[0]];
+    //float val = coeffs[COEEFWIDTH[0] * (posX + COEFFMAXRANGE[0] - simRange[0]) + posY + COEFFMAXRANGE[0] - simRange[0]];
+    float val = coeffs[31 * (posX + COEFFMAXRANGE[0] - simRange[0]) + posY + COEFFMAXRANGE[0] - simRange[0]];
     if (val >= 0.0) {
 
         Result[id.xy] = float4(0, val, 0, 1.0);

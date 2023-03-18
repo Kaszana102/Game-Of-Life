@@ -17,7 +17,14 @@ public class ShowSliderValue : MonoBehaviour
     {
         if (text != null)
         {
-            text.text = slider.value.ToString();
+            if (slider.wholeNumbers)
+            {
+                text.text = slider.value.ToString();
+            }
+            else
+            {
+                text.text = slider.value.ToString("0.00");
+            }
         }
 
     }

@@ -29,9 +29,9 @@ RWTexture2D<float> Source;//black white
 StructuredBuffer<data> simBuffer;
 StructuredBuffer<BrushType> brush;
 StructuredBuffer<float> coeff;
+StructuredBuffer<int> COEFFMAXRANGE;
+StructuredBuffer<int> COEEFWIDTH;
 
-#define COEFFMAXRANGE  10
-#define COEEFWIDTH (COEFFMAXRANGE*2 + 1)
 
 
 [numthreads(8,8,1)]
@@ -52,7 +52,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
                     pos.y = id.y + j;
 
                     if ((float)distance(pos, id) <= simBuffer[0].simRange) { //if in range
-                        sum += Source[pos.xy] * coeff[COEEFWIDTH * (i + COEFFMAXRANGE) + j + COEFFMAXRANGE];
+                        sum += Source[pos.xy] * coeff[COEEFWIDTH[0] * (i + COEFFMAXRANGE[0]) + j + COEFFMAXRANGE[0]];
                     }
                 }
             }
