@@ -8,6 +8,7 @@ struct data
     //simulation parameters
     int simRange;
     bool simulating;
+    bool resetMap;
 };
 
 struct BrushType
@@ -36,33 +37,38 @@ StructuredBuffer<float> coeff;
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-    if (simBuffer[0].simulating) {
+    if (!simBuffer[0].resetMap) {
+        if (simBuffer[0].simulating) {
 
-        uint3 pos;
-        pos.z = 0;
+            uint3 pos;
+            pos.z = 0;
 
-        float sum = 0.0;
-        //search in square
-        for (int i = -simBuffer[0].simRange; i <= simBuffer[0].simRange; i++) {
-            for (int j = -simBuffer[0].simRange; j <= simBuffer[0].simRange; j++) {
+            float sum = 0.0;
+            //search in square
+            for (int i = -simBuffer[0].simRange; i <= simBuffer[0].simRange; i++) {
+                for (int j = -simBuffer[0].simRange; j <= simBuffer[0].simRange; j++) {
 
-                pos.x = id.x + i;
-                pos.y = id.y + j;
+                    pos.x = id.x + i;
+                    pos.y = id.y + j;
 
-                if ((float)distance(pos, id) <= simBuffer[0].simRange) { //if in range
-                    sum += Source[pos.xy] * coeff[COEEFWIDTH *(i+ COEFFMAXRANGE)+j+ COEFFMAXRANGE];
+                    if ((float)distance(pos, id) <= simBuffer[0].simRange) { //if in range
+                        sum += Source[pos.xy] * coeff[COEEFWIDTH * (i + COEFFMAXRANGE) + j + COEFFMAXRANGE];
+                    }
                 }
             }
-        }
-        //simple clamp
-        if (sum > 1.0) sum = 1; 
-        if (sum < 0.0)   sum = 0;        
+            //simple clamp
+            if (sum > 1.0) sum = 1;
+            if (sum < 0.0)   sum = 0;
 
-        Result[id.xy] = sum;
-        
-    }    
+            Result[id.xy] = sum;
+
+        }
+        else {
+            Result[id.xy] = Source[id.xy];
+        }
+    }
     else {
-        Result[id.xy] = Source[id.xy];
+        Result[id.xy] = float4(0, 0, 0, 0);
     }
 
     //when brushing add val

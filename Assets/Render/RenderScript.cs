@@ -32,6 +32,7 @@ public class RenderScript : MonoBehaviour
     {
         public int simRange;
         public int simulating;
+        public int resetMap;
 
     }
     SimData[] simData = new SimData[1];
@@ -53,13 +54,14 @@ public class RenderScript : MonoBehaviour
     ComputeBuffer coefficientsBuffer;
 
     bool circleToDraw = false;
+    bool taskToResetMap = false;
 
     public BezierCurve bezier;
     // Start is called before the first frame update
     void Start()
     {
         //creating buffers
-        simBuffer = new ComputeBuffer(1, 4+4);
+        simBuffer = new ComputeBuffer(1, 4+4+4);
         brushBuffer = new ComputeBuffer(1, 16);
         coefficientsBuffer = new ComputeBuffer(COEFFWIDTH* COEFFWIDTH, 4);
 
@@ -92,13 +94,7 @@ public class RenderScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {                
-        //input draw test
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SetiSimulating(!GetiSimulating());
-        }
-
+    {                        
         brushBuffer.SetData(brushData);
         simBuffer.SetData(simData);
         coefficientsBuffer.SetData(coefficients);
@@ -139,6 +135,11 @@ public class RenderScript : MonoBehaviour
             circleToDraw = false;
             brushData[0].strength = 0f;
         }
+        
+        simData[0].resetMap = 0;
+        
+
+
     }
 
     public void SetiSimulating(bool val)
@@ -207,6 +208,11 @@ public class RenderScript : MonoBehaviour
     public float[] GetCoeffs()
     {
         return coefficients;
+    }
+
+    public void ResetMap()
+    {
+        simData[0].resetMap = 1;
     }
 
 }

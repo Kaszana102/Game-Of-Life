@@ -26,7 +26,9 @@ public class BezierCurve : MonoBehaviour
     public ComputeShader shader;
     public ComputeShader shaderReset;
 
-    int2[] pointsArray = new int2[13];
+    const int MAX_BEZIER_POINTS = 8;
+
+    int2[] pointsArray = new int2[MAX_BEZIER_POINTS*3-2];
     int[] pointsNumber = new int[1];
 
     ComputeBuffer pointsBuffer;
@@ -54,7 +56,7 @@ public class BezierCurve : MonoBehaviour
         shaderReset.SetTexture(0, "Result", text);
         
 
-        pointsBuffer = new ComputeBuffer(13, 8);
+        pointsBuffer = new ComputeBuffer(MAX_BEZIER_POINTS*3-2, 8);
         pointsNumberBuffer = new ComputeBuffer(1, 4);
         
         bezierPoints.Add(new BezierPoint(new int2(0,000), new int2(0, 0), new int2(100, 100)));
@@ -109,7 +111,7 @@ public class BezierCurve : MonoBehaviour
 
     void CreateNewBezierPoint()
     {
-        if (bezierPoints.Count < 5)
+        if (bezierPoints.Count < MAX_BEZIER_POINTS)
         {
             Vector2 mousePos = MousePosToTextCoord();
             int indexToAdd = 0;
@@ -332,11 +334,6 @@ public class BezierCurve : MonoBehaviour
         }
         else
         {
-
-            if (0.25 < t && t <= 0.5f)
-            {
-                int a = 2;
-            }
 
             prevPointIndex *= 3;//convert bezierpoint index do pointsarray index
 
