@@ -28,6 +28,10 @@ public class RenderScript : MonoBehaviour
     int width = 1024;
     int height = 1024;
 
+    float SimSpeed = 1;
+    int counter = 0;
+    bool paused = false;
+
     public struct SimData
     {
         public int simRange;
@@ -91,7 +95,20 @@ public class RenderScript : MonoBehaviour
         image = gameObject.GetComponent<RawImage>();
         
     }
-
+    private void FixedUpdate()
+    {
+        if(!paused)
+        {
+            if(counter == 0)
+            {
+                simData[0].simulating = 1;
+            }else
+            {
+                simData[0].simulating = 0;
+            }
+            counter = (counter+1)%(int)(1/SimSpeed);
+        }
+    }
     // Update is called once per frame
     void Update()
     {                        
@@ -145,6 +162,7 @@ public class RenderScript : MonoBehaviour
     public void SetiSimulating(bool val)
     {
         simData[0].simulating=val? 1:0;
+        paused = !val;
     }
     public bool GetiSimulating()
     {
@@ -169,6 +187,10 @@ public class RenderScript : MonoBehaviour
     public void SetBrushRange(float range)
     {
         brushData[0].brushRange= (int)range;
+    }
+    public void SetSimulationSpeed(float speed)
+    {
+        SimSpeed = speed;
     }
 
     public void SetBrushCenter(uint2 center)
