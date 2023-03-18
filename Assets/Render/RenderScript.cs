@@ -27,6 +27,7 @@ public class RenderScript : MonoBehaviour
 
     int width = 1024;
     int height = 1024;
+    public const int MAX_SIM_RANGE = 15;
 
     float SimSpeed = 1;
     int counter = 0;
@@ -52,10 +53,11 @@ public class RenderScript : MonoBehaviour
     BrushData[] brushData = new BrushData[1];
     ComputeBuffer brushBuffer;
 
-    const int COEFFWIDTH = 21;
+    public const int COEFFWIDTH = MAX_SIM_RANGE*2+1;
 
     float[] coefficients = new float[COEFFWIDTH * COEFFWIDTH];                   
     ComputeBuffer coefficientsBuffer;
+    
 
     bool circleToDraw = false;
     bool taskToResetMap = false;
@@ -93,7 +95,21 @@ public class RenderScript : MonoBehaviour
         brushData[0].brushCenter = uint2.zero;
 
         image = gameObject.GetComponent<RawImage>();
-        
+
+
+
+        //set coeff ranges for compute shader
+        int[] coeffMaxRange = new int[1];
+        int[] coeffWidth = new int[1];
+        ComputeBuffer rangeBuffer = new ComputeBuffer(1, 4);
+        ComputeBuffer widthBuffer = new ComputeBuffer(1, 4);
+        coeffMaxRange[0] = RenderScript.MAX_SIM_RANGE;
+        rangeBuffer.SetData(coeffMaxRange);
+        shader.SetBuffer(0, "COEFFMAXRANGE", rangeBuffer);
+        coeffWidth[0] = RenderScript.COEFFWIDTH;
+        widthBuffer.SetData(coeffWidth);
+        shader.SetBuffer(0, "COEEFWIDTH", widthBuffer);
+
     }
     private void FixedUpdate()
     {
