@@ -130,6 +130,8 @@ public class BezierCurve : MonoBehaviour
             {
                 bezierPoints.Add(new BezierPoint(mousePos, new Vector2(-50, 0), new Vector2(50, 0)));
             }
+            ConvertBezierToPoints();
+            render.RefreshCoefficients();
         }
     }
 
@@ -287,6 +289,7 @@ public class BezierCurve : MonoBehaviour
     public void SetBezierPoints(List<BezierPoint> newPoints)
     {
         bezierPoints = newPoints;
+        ConvertBezierToPoints();
     }
 
 
@@ -298,6 +301,7 @@ public class BezierCurve : MonoBehaviour
     /// <returns></returns>
     public float Evaluate(float t)
     {
+        
         int x = (int)(t * text.width);
 
         bool found = false;

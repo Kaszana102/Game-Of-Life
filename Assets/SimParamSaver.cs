@@ -47,9 +47,9 @@ public class SimParamSaver : MonoBehaviour
     {
         int index = ((int)indexSlider.value) - 1;
         if (paramsList[index].saved)
-        {
-            render.SimRange(paramsList[index].simRange);
+        {            
             simRangeSlider.value = paramsList[index].simRange;
+            //render.SimRange(paramsList[index].simRange);
             bezierCurve.SetBezierPoints(Extensions.Clone(paramsList[index].points));
             render.RefreshCoefficients();
         }
@@ -63,13 +63,13 @@ public class SimParamSaver : MonoBehaviour
         switch (index)
         {
             case 0:
-                //bizmut
+                //dots
                 specialSimRange = 15;
-                specialPoints.Add(new BezierPoint(new int2(64,89), new int2(52,269), new int2(55,0),true));
-                specialPoints.Add(new BezierPoint(new int2(95,338), new int2(145,449), new int2(195,338), true));
-                specialPoints.Add(new BezierPoint(new int2(188,110), new int2(264,350), new int2(312,144), true));                
-                specialPoints.Add(new BezierPoint(new int2(306,392), new int2(357,489), new int2(406,392), true));                
-                specialPoints.Add(new BezierPoint(new int2(400,200), new int2(436,57), new int2(600,200), true));
+                specialPoints.Add(new BezierPoint(new int2(10,42), new int2(0,326), new int2(67,293),true));
+                specialPoints.Add(new BezierPoint(new int2(156,282), new int2(232,366), new int2(280,243), true));
+                specialPoints.Add(new BezierPoint(new int2(283,196), new int2(288,65), new int2(343,164), true));                
+                specialPoints.Add(new BezierPoint(new int2(956,212), new int2(449,148), new int2(403,238), true));                
+                
 
 
 
@@ -85,12 +85,12 @@ public class SimParamSaver : MonoBehaviour
                 break;
             case 1:
                 //komórki?
-                specialSimRange = 15;
-                specialPoints.Add(new BezierPoint(new int2(64,89), new int2(37,176), new int2(55,0),true));
-                specialPoints.Add(new BezierPoint(new int2(95,338), new int2(145,449), new int2(195,338),true));
-                specialPoints.Add(new BezierPoint(new int2(188,110), new int2(260,306), new int2(312,144),true));
-                specialPoints.Add(new BezierPoint(new int2(306,392), new int2(365,403), new int2(406,392),true));
-                specialPoints.Add(new BezierPoint(new int2(392,161), new int2(460,57), new int2(600,200),true));
+                specialSimRange = 9;
+                specialPoints.Add(new BezierPoint(new int2(10,42), new int2(0,214), new int2(67,293),true));
+                specialPoints.Add(new BezierPoint(new int2(88,240), new int2(125,280), new int2(190,279), true));
+                specialPoints.Add(new BezierPoint(new int2(182,258), new int2(232,235), new int2(269,262), true));
+                specialPoints.Add(new BezierPoint(new int2(282,253), new int2(350,282), new int2(389,246), true));
+                specialPoints.Add(new BezierPoint(new int2(410,217), new int2(478,225), new int2(403,238), true));
                 break;
             case 2:
                 //fajny podzia³ komórek
@@ -103,13 +103,17 @@ public class SimParamSaver : MonoBehaviour
                 break;
 
 
-            
+
+
+
+                //specialPoints.Add(new BezierPoint(new int2(,), new int2(,), new int2(,),true));
+                //specialPoints.Add(new BezierPoint(new int2(,), new int2(,), new int2(,), true));
         }
 
-        render.SimRange(specialSimRange);
+        //render.SimRange(specialSimRange);
         simRangeSlider.value = specialSimRange;
         bezierCurve.SetBezierPoints(Extensions.Clone(specialPoints));
-        render.RefreshCoefficients();
+        render.RefreshCoefficients();        
     }
 
 }
