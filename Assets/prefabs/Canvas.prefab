@@ -238,7 +238,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74b4f71999d82747a4d92b4c2015946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 7200000, guid: c18914d72797e8a409d952dbb07b24ae, type: 3}
+  simShader: {fileID: 7200000, guid: c18914d72797e8a409d952dbb07b24ae, type: 3}
+  colorSimShader: {fileID: 7200000, guid: 0f64bea9b0fec0d4b909835bb87862e2, type: 3}
+  ColorfulResult: {fileID: 0}
   TextResult: {fileID: 0}
   TextSource: {fileID: 0}
   bezier: {fileID: 2523850461421987923}

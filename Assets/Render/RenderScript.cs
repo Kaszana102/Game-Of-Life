@@ -16,8 +16,8 @@ using Unity.Mathematics;
 public class RenderScript : MonoBehaviour
 {
     //Shader resources
-    public ComputeShader shader;    
-    [SerializeField] RenderTexture TextResult;
+    public ComputeShader simShader;        
+    RenderTexture TextResult;
     public RenderTexture TextSource;
     RawImage image;
           
@@ -59,8 +59,7 @@ public class RenderScript : MonoBehaviour
     ComputeBuffer coefficientsBuffer;
     
 
-    bool circleToDraw = false;
-    bool taskToResetMap = false;
+    bool circleToDraw = false;    
 
     public BezierCurve bezier;
     // Start is called before the first frame update
@@ -81,8 +80,7 @@ public class RenderScript : MonoBehaviour
         TextSource = new RenderTexture(width, height, 24);
         TextSource.enableRandomWrite = true;
         TextSource.Create();
-
-
+        
 
         //initializing start values
         //sim
@@ -94,8 +92,7 @@ public class RenderScript : MonoBehaviour
         brushData[0].brushRange = 2;
         brushData[0].brushCenter = uint2.zero;
 
-        image = gameObject.GetComponent<RawImage>();
-
+        image = gameObject.GetComponent<RawImage>();        
 
 
         //set coeff ranges for compute shader
@@ -105,10 +102,10 @@ public class RenderScript : MonoBehaviour
         ComputeBuffer widthBuffer = new ComputeBuffer(1, 4);
         coeffMaxRange[0] = RenderScript.MAX_SIM_RANGE;
         rangeBuffer.SetData(coeffMaxRange);
-        shader.SetBuffer(0, "COEFFMAXRANGE", rangeBuffer);
+        simShader.SetBuffer(0, "COEFFMAXRANGE", rangeBuffer);
         coeffWidth[0] = RenderScript.COEFFWIDTH;
         widthBuffer.SetData(coeffWidth);
-        shader.SetBuffer(0, "COEEFWIDTH", widthBuffer);
+        simShader.SetBuffer(0, "COEEFWIDTH", widthBuffer);
 
     }
     private void FixedUpdate()
@@ -132,34 +129,39 @@ public class RenderScript : MonoBehaviour
         simBuffer.SetData(simData);
         coefficientsBuffer.SetData(coefficients);
 
-        shader.SetBuffer(0, "simBuffer", simBuffer);        
-        shader.SetBuffer(0, "brush", brushBuffer);
-        shader.SetBuffer(0, "coeff", coefficientsBuffer);
+        simShader.SetBuffer(0, "simBuffer", simBuffer);        
+        simShader.SetBuffer(0, "brush", brushBuffer);
+        simShader.SetBuffer(0, "coeff", coefficientsBuffer);
 
         if (srcToRes) //swap textures for simulation
         {
-            shader.SetTexture(0, "Result", TextResult);
-            shader.SetTexture(0, "Source", TextSource);            
+            simShader.SetTexture(0, "Result", TextResult);
+            simShader.SetTexture(0, "Source", TextSource);            
         }
         else
         {
-            shader.SetTexture(0, "Result", TextSource);
-            shader.SetTexture(0, "Source", TextResult);
+            simShader.SetTexture(0, "Result", TextSource);
+            simShader.SetTexture(0, "Source", TextResult);
         }
 
         
 
-        shader.Dispatch(0, TextSource.width / 8, TextSource.height / 8, 1); //one frame of simulation
+        simShader.Dispatch(0, TextSource.width / 8, TextSource.height / 8, 1); //one frame of simulation
+
 
         //set texture
         if (srcToRes)
-        {
+        {            
             image.texture = TextResult;
         }
         else
-        {
+        {            
             image.texture = TextSource;
         }
+               
+        
+
+        
 
 
         srcToRes = !srcToRes;
