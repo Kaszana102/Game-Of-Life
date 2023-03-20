@@ -2495,6 +2495,7 @@ MonoBehaviour:
   bezierCurve: {fileID: 0}
   indexSlider: {fileID: 6782960881019182935}
   simRangeSlider: {fileID: 0}
+  loadPresetImage: {fileID: 4234446905370942587}
 --- !u!1 &8716720697743660012
 GameObject:
   m_ObjectHideFlags: 0

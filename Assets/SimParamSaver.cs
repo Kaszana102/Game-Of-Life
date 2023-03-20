@@ -15,6 +15,8 @@ public class SimParamSaver : MonoBehaviour
 
     public Slider simRangeSlider;
 
+    public Image loadPresetImage;
+
     public struct allSimParams
     {
         public int simRange;
@@ -33,6 +35,17 @@ public class SimParamSaver : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        int index = ((int)indexSlider.value) - 1;
+        if (paramsList[index].saved)
+        {
+            loadPresetImage.color = Color.green;
+        }
+        else {
+            loadPresetImage.color = Color.gray;
+        }
+    }
 
     public void SaveActParams()
     {
