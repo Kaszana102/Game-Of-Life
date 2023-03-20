@@ -301,76 +301,83 @@ public class BezierCurve : MonoBehaviour
     /// <returns></returns>
     public float Evaluate(float t)
     {
-        
-        int x = (int)(t * text.width);
-
-        bool found = false;
-        bool beforeFirst = false;
-        int prevPointIndex = 0;
-        for(int i =0; i<bezierPoints.Count; i++)
+        if (text != null)
         {
-            if (x <= bezierPoints[i].center.pos.x)
-            {                
-                found = true;
-                if (i == 0)
-                {
-                    beforeFirst = true;
-                }
-                else
-                {
-                    prevPointIndex = i-1;
-                }
-                break;
-            }
-        }
+            int x = (int)(t * width);
 
-        float result=0;
-        if (!found)
-        {
-            //interpolate from the end
-            
-            result = bezierPoints[bezierPoints.Count - 1].center.pos.y;
-        }
-        else if (beforeFirst)
-        {
-            //interpolate from the beg
-            result = bezierPoints[0].center.pos.y;
-        }
-        else
-        {
-
-            prevPointIndex *= 3;//convert bezierpoint index do pointsarray index
-
-            float sum = 0;
-            float targetF
-                =0;
-            //standard calc estimation
-            for(float f = 0; f <= 1; f += 0.01f)
+            bool found = false;
+            bool beforeFirst = false;
+            int prevPointIndex = 0;
+            for (int i = 0; i < bezierPoints.Count; i++)
             {
-                sum = 0;
-                for (int i = 0; i < 4; i++)
+                if (x <= bezierPoints[i].center.pos.x)
                 {
-                    sum += ((i==2 || i == 1)? 3 : 1) * math.pow(f, i) * math.pow(1 - f, 3 - i) * pointsArray[prevPointIndex + i].x;                    
-                }
-                if (sum >= x)
-                {
-                    //found f (aproximately) xd
-                    targetF = f;
+                    found = true;
+                    if (i == 0)
+                    {
+                        beforeFirst = true;
+                    }
+                    else
+                    {
+                        prevPointIndex = i - 1;
+                    }
                     break;
                 }
             }
 
-            //caly y
-            for (int i = 0; i < 4; i++)
+            float result = 0;
+            if (!found)
             {
-                result += ((i == 2 || i == 1) ? 3 : 1) * math.pow(targetF, i) * math.pow(1 - targetF, 3 - i) * pointsArray[prevPointIndex + i].y;                
+                //interpolate from the end
+
+                result = bezierPoints[bezierPoints.Count - 1].center.pos.y;
             }
+            else if (beforeFirst)
+            {
+                //interpolate from the beg
+                result = bezierPoints[0].center.pos.y;
+            }
+            else
+            {
+
+                prevPointIndex *= 3;//convert bezierpoint index do pointsarray index
+
+                float sum = 0;
+                float targetF
+                    = 0;
+                //standard calc estimation
+                for (float f = 0; f <= 1; f += 0.01f)
+                {
+                    sum = 0;
+                    for (int i = 0; i < 4; i++)
+                    {
+                        sum += ((i == 2 || i == 1) ? 3 : 1) * math.pow(f, i) * math.pow(1 - f, 3 - i) * pointsArray[prevPointIndex + i].x;
+                    }
+                    if (sum >= x)
+                    {
+                        //found f (aproximately) xd
+                        targetF = f;
+                        break;
+                    }
+                }
+
+                //caly y
+                for (int i = 0; i < 4; i++)
+                {
+                    result += ((i == 2 || i == 1) ? 3 : 1) * math.pow(targetF, i) * math.pow(1 - targetF, 3 - i) * pointsArray[prevPointIndex + i].y;
+                }
+            }
+
+            //convert result to <-1,1>
+            result = Mathf.Lerp(-1, 1, result / text.height);
+
+
+            return result;
         }
-
-        //convert result to <-1,1>
-        result  = Mathf.Lerp(-1,1,result/text.height);
-
-        return result;
+        else
+        {
+            return 0;
+        }
     }
 
 
