@@ -239,9 +239,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simShader: {fileID: 7200000, guid: c18914d72797e8a409d952dbb07b24ae, type: 3}
-  colorSimShader: {fileID: 7200000, guid: 0f64bea9b0fec0d4b909835bb87862e2, type: 3}
-  ColorfulResult: {fileID: 0}
-  TextResult: {fileID: 0}
   TextSource: {fileID: 0}
   bezier: {fileID: 2523850461421987923}
 --- !u!114 &1489342607
@@ -2093,7 +2090,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!114 &2979788670372007313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3583,7 +3580,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 5727060898724237889}
   m_HandleRect: {fileID: 2450250457552951389}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.01
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 1

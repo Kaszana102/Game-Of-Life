@@ -68,20 +68,7 @@ public class SimParamSaver : MonoBehaviour
                 specialPoints.Add(new BezierPoint(new int2(10,42), new int2(0,326), new int2(67,293),true));
                 specialPoints.Add(new BezierPoint(new int2(156,282), new int2(232,366), new int2(280,243), true));
                 specialPoints.Add(new BezierPoint(new int2(283,196), new int2(288,65), new int2(343,164), true));                
-                specialPoints.Add(new BezierPoint(new int2(956,212), new int2(449,148), new int2(403,238), true));                
-                
-
-
-
-                /*
-                specialSimRange = 15;
-                specialPoints.Add(new BezierPoint(new int2(64,89), new int2(52,269), new int2(55,0),true));
-                specialPoints.Add(new BezierPoint(new int2(77,329), new int2(145,449), new int2(178,334), true));
-                specialPoints.Add(new BezierPoint(new int2(188,110), new int2(267,364), new int2(312,144), true));                
-                specialPoints.Add(new BezierPoint(new int2(306,392), new int2(357,489), new int2(406,392), true));                
-                specialPoints.Add(new BezierPoint(new int2(400,200), new int2(436,57), new int2(600,200), true)); 
-                  */
-
+                specialPoints.Add(new BezierPoint(new int2(956,212), new int2(449,148), new int2(403,238), true));                                                
                 break;
             case 1:
                 //komórki?
@@ -101,10 +88,34 @@ public class SimParamSaver : MonoBehaviour
 
 
                 break;
+            case 3:
+                specialSimRange = 15;
+                specialPoints.Add(new BezierPoint(new int2(15, 322), new int2(0, 216), new int2(62, 160), true));
+                specialPoints.Add(new BezierPoint(new int2(80, 206), new int2(107, 198), new int2(118, 253), true));
+                specialPoints.Add(new BezierPoint(new int2(143, 245), new int2(123, 322), new int2(165, 193), true));
+                specialPoints.Add(new BezierPoint(new int2(165, 275), new int2(178, 358), new int2(216, 314), true));
+                specialPoints.Add(new BezierPoint(new int2(262, 305), new int2(283, 222), new int2(345, 206), true));
+                specialPoints.Add(new BezierPoint(new int2(360, 224), new int2(321, 21), new int2(413, 271), true));
+                specialPoints.Add(new BezierPoint(new int2(419, 173), new int2(500, 248), new int2(600, 200), true));
+                break;
+            case 4:
+                
+                specialSimRange = 11;
+                specialPoints.Add(new BezierPoint(new int2(10, 42), new int2(0, 418), new int2(37, 238), true));
+                specialPoints.Add(new BezierPoint(new int2(28, 144), new int2(47, 89), new int2(279, 245), true));
+                specialPoints.Add(new BezierPoint(new int2(156, 235), new int2(216, 295), new int2(249, 172), true));
+                specialPoints.Add(new BezierPoint(new int2(296, 387), new int2(350, 381), new int2(428, 283), true));
+                specialPoints.Add(new BezierPoint(new int2(250, 50), new int2(484, 15), new int2(343, 164), true));
+                break;
+            case 5:
+                
+                specialSimRange = 10;
+                specialPoints.Add(new BezierPoint(new int2(27, 45), new int2(0, 251), new int2(67, 500), true));
+                specialPoints.Add(new BezierPoint(new int2(71, 500), new int2(274, 500), new int2(258, 0), true));
+                specialPoints.Add(new BezierPoint(new int2(368, 203), new int2(489, 0), new int2(600, 200), true));
 
-
-
-
+                break;
+                        
 
                 //specialPoints.Add(new BezierPoint(new int2(,), new int2(,), new int2(,),true));
                 //specialPoints.Add(new BezierPoint(new int2(,), new int2(,), new int2(,), true));
